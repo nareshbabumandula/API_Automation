@@ -3,12 +3,16 @@ package stepdefinitions;
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
 
+import java.util.List;
+import java.util.Map;
+
 import com.example.api.constants.ApiEndPoints;
 
 import io.cucumber.cienvironment.internal.com.eclipsesource.json.JsonObject;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import utilities.RestUtilities;
@@ -16,25 +20,25 @@ import utilities.RestUtilities;
 public class UserSteps {
 
 	private Response response;
-	
+
 	public UserSteps() {
-		utilities.RestUtilities.setBaseURI();
-		utilities.RestUtilities.setContentType();
+		RestUtilities.setBaseURI();
+		RestUtilities.setContentType();
 	}
 
 	@Given("I have a valid user ID")
 	public void validateUser() {
-
+		
 	}
 
 	@When("I perform a GET operation for users")
 	public void getUser() {
-		
 		response =given()
 				.when()
 				.get(ApiEndPoints.USERS)
 				.then()
 				.extract().response();
+				
 		JsonPath jsonResponse = new JsonPath(response.asString());
 		int ID = jsonResponse.getInt("data[0].id");
 		String email = jsonResponse.getString("data[0].email");
@@ -44,6 +48,18 @@ public class UserSteps {
 		assert email.equals("michael.lawson@reqres.in");
 		assert first_name.equals("Michael");
 		assert last_name.equals("Lawson");
+
+		// Loop through JSON response
+		JsonPath path = new JsonPath(response.asString());
+		List<Map<String, Object>> users = path.getList("data");
+        System.out.println("No of objects in json array are : " + path.getList("data").size());
+		for (Map<String, Object> user : users) {
+			System.out.println("ID : " + user.get("id"));
+			System.out.println("Email : " + user.get("email"));
+			System.out.println("Firstname : " + user.get("first_name"));
+			System.out.println("Lastname" + user.get("last_name"));
+			System.out.println("Avatar : " + user.get("avatar"));
+		}
 	}
 
 	@Then("I should get a {int} status code and user details")
@@ -94,15 +110,15 @@ public class UserSteps {
 	public void i_should_get_status_code(int statusCode) {
 		assertEquals(statusCode, response.getStatusCode());
 	}
-	
-	
+
+
 	@When("I perform DELETE operation for user with id {int}")
 	public void deleteUser(Integer int1) {
-	    response = given()
-	    		.when()
-	    		.delete(ApiEndPoints.USER.replace("{id}", int1.toString()))
-	    		.then()
-	    		.extract().response();
+		response = given()
+				.when()
+				.delete(ApiEndPoints.USER.replace("{id}", int1.toString()))
+				.then()
+				.extract().response();
 	}
 
 
