@@ -120,7 +120,14 @@ public class UserSteps {
 				.then()
 				.extract().response();
 	}
-
-
+	
+	@When("I perform a GET operation for a from a user list")
+	public void getUserResource() {
+		response =given()
+				.when()
+				.get(ApiEndPoints.LISTRESOURCE)
+				.then()
+				.extract().response();
+	}
 
 }

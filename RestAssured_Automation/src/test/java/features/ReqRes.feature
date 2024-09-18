@@ -24,3 +24,9 @@ Scenario: Deleting an existing user
 When I perform DELETE operation for user with id 2
 Then I should get status code 204
 
+@dryrun
+Scenario: Get a user list from the resource
+When I perform a GET operation for a from a user list
+Then I should get a 200 status code and user details
+
+
