@@ -62,7 +62,7 @@ public class UserSteps {
 		}
 	}
 
-	@Then("I should get a {int} status code and user details")
+	@Then("I should get status code as {int} in the response")
 	public void verifyUserResponse(int statusCode) {
 		assertEquals(statusCode, response.getStatusCode());
 	}
@@ -105,12 +105,6 @@ public class UserSteps {
 				.then()
 				.extract().response();
 	}
-
-	@Then("I should get status code {int}")
-	public void i_should_get_status_code(int statusCode) {
-		assertEquals(statusCode, response.getStatusCode());
-	}
-
 
 	@When("I perform DELETE operation for user with id {int}")
 	public void deleteUser(Integer int1) {
