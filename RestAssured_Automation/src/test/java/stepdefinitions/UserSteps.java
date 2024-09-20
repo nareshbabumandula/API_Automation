@@ -6,6 +6,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
+
 import com.example.api.constants.ApiEndPoints;
 
 import io.cucumber.cienvironment.internal.com.eclipsesource.json.JsonObject;
@@ -60,6 +62,27 @@ public class UserSteps {
 			System.out.println("Lastname" + user.get("last_name"));
 			System.out.println("Avatar : " + user.get("avatar"));
 		}
+		
+	
+		// JSON parsing
+		JSONObject obj = new JSONObject("{\r\n"
+				+ "    \"data\": {\r\n"
+				+ "        \"id\": 2,\r\n"
+				+ "        \"email\": \"janet.weaver@reqres.in\",\r\n"
+				+ "        \"first_name\": \"Janet\",\r\n"
+				+ "        \"last_name\": \"Weaver\",\r\n"
+				+ "        \"avatar\": \"https://reqres.in/img/faces/2-image.jpg\"\r\n"
+				+ "    },\r\n"
+				+ "    \"support\": {\r\n"
+				+ "        \"url\": \"https://reqres.in/#support-heading\",\r\n"
+				+ "        \"text\": \"To keep ReqRes free, contributions towards server costs are appreciated!\"\r\n"
+				+ "    }\r\n"
+				+ "}");
+		
+		System.out.println("ID is : " + obj.getInt("data.id"));
+		System.out.println("ID is : " + obj.getInt("data.email"));
+		
+		
 	}
 
 	@Then("I should get status code as {int} in the response")
